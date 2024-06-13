@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
+const { Customer, validate } = require("../models/customer");
 
 router.get("/", async (req, res) => {
   const customer = await Customer.find();
@@ -12,7 +14,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validateData(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   let customer = new Customer.find({
     name: req.body.name,
@@ -25,7 +27,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const customerId = new mongoose.Types.ObjectId(req.params.id);
-  const { error } = validateData(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   const customer = await Customer.findOneAndUpdate(
     customerId,

@@ -1,5 +1,5 @@
-const Joi = require("joi");
 const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const customerSchema = new mongoose.Schema({
   name: { type: String, minlength: 5, maxlength: 5, required: true },
