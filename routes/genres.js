@@ -1,28 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
-const mongoose = require("mongoose");
-
-mongoose
-  .connect("mongodb://localhost/vidly")
-  .then(() => console.log("Connected to Vidly..."))
-  .catch(() => console.log("Couldn't Connect to Vidly !"));
-
-const genresSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-});
-
-const Genre = mongoose.model("genres", genresSchema);
-
-const validateData = (gener) => {
-  const schema = Joi.object({
-    id: Joi.number(),
-    name: Joi.string().min(6).required(),
-    description: Joi.string().min(10).required(),
-  });
-  return schema.validate(gener);
-};
 
 router.get("/", async (req, res) => {
   const genre = await Genre.find().sort("name");
