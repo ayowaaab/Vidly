@@ -18,4 +18,5 @@ const validateData = (gener) => {
 };
 
 exports.Genre = Genre;
+exports.genresSchema = genresSchema;
 exports.validate = validateData;
