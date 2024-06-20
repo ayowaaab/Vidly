@@ -11,10 +11,12 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
-  let user = new User({ name: req.body.name });
+  let user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  });
   user = await user.save();
-
   res.send(user);
 });
 
@@ -24,7 +26,7 @@ router.put("/:id", async (req, res) => {
 
   const user = await User.findByIdAndUpdate(
     req.params.id,
-    { name: req.body.name },
+    { name: req.body.name, email: req.body.email, password: req.body.password },
     {
       new: true,
     }
