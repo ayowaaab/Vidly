@@ -10,10 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2",
-    "fawn": "^2.1.5",
-    "joi": "^13.1.0",
-    "joi-objectid": "^2.0.0",
-    "mongoose": "^8.4.3"
+    "express": "^4.19.2",
+    "joi": "^17.13.1",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.2"
   }
 }
