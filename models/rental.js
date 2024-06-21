@@ -3,7 +3,9 @@ const Joi = require("joi");
 
 const schema = mongoose.Schema;
 
-const Rental = mongoose.model("Rental", new schema({}));
+const Rental = mongoose.model("Rental", new schema({
+    
+}));
 
 function validateRental(rental) {
   const schema = Joi.object({

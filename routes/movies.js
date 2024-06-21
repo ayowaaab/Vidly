@@ -24,8 +24,8 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.message);
-  const genreId = new mongoose.Types.ObjectId(req.params.id);
-  let movie = await Movie.findById(genreId);
+  const movieId = new mongoose.Types.ObjectId(req.params.id);
+  let movie = await Movie.findById(movieId);
   if (!movie)
     return res.status(400).send("Couldn't get the movie with the Given ID !");
 
@@ -39,8 +39,8 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const genreId = new mongoose.Types.ObjectId(req.params.id);
-  const movie = await Movie.findByIdAndDelete(genreId);
+  const movieId = new mongoose.Types.ObjectId(req.params.id);
+  const movie = await Movie.findByIdAndDelete(movieId);
   if (!movie) res.status(400).send("ID Doesn't Exist !");
   res.status(200).send("Movie Deleted Succesfully");
 });
