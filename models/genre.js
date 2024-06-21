@@ -1,22 +1,25 @@
-const Joi = require("joi");
-const mongoose = require("mongoose");
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
-const genresSchema = new mongoose.Schema({
-  name: String,
-  description: String,
+const genreSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 50
+  }
 });
 
-const Genre = mongoose.model("genres", genresSchema);
+const Genre = mongoose.model('Genre', genreSchema);
 
-const validateData = (gener) => {
-  const schema = Joi.object({
-    id: Joi.number(),
-    name: Joi.string().min(6).required(),
-    description: Joi.string().min(10).required(),
-  });
-  return schema.validate(gener);
-};
+function validateGenre(genre) {
+  const schema = {
+    name: Joi.string().min(3).required()
+  };
 
-exports.Genre = Genre;
-exports.genresSchema = genresSchema;
-exports.validate = validateData;
+  return Joi.validate(genre, schema);
+}
+
+exports.genreSchema = genreSchema;
+exports.Genre = Genre; 
+exports.validate = validateGenre;
