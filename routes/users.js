@@ -4,16 +4,17 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const users = await User.find().sort("email");
+  const users = await User.find().sort("email").select('-_id -__v');
   res.send(users);
 });
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.message);
-  const exist = User.findOne("email");
-  if (exist) res.status(400).send("this user already Exist !");
-  let user = new User({
+
+  let user = await User.findOne({ email: req.body.email });
+  if (user) return res.status(400).send("this user already Exist !");
+  user = new User({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
