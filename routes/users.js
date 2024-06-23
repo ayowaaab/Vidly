@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const { hashPassword } = require("../hash");
 const { User, validate } = require("../models/user");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const users = await User.find().sort("email").select('-_id -__v');
+  const users = await User.find().sort("email").select("-_id -__v");
   res.send(users);
 });
 
@@ -14,10 +15,11 @@ router.post("/", async (req, res) => {
 
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("this user already Exist !");
+  const hashed = hashPassword(req.body.password);
   user = new User({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password: await hashed,
   });
   user = await user.save();
   res.status(200).send(user);

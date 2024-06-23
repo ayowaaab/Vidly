@@ -23,8 +23,7 @@ const User = mongoose.model(
     password: {
       type: String,
       required: true,
-      minlength: 3,
-      maxlength: 12,
+      minlength: 5,
     },
   })
 );
