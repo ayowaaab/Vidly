@@ -4,6 +4,8 @@ const { User, validate } = require("../models/user");
 const _ = require("lodash");
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 router.get("/", async (req, res) => {
   const users = await User.find().sort("email").select("-_id -__v");
@@ -22,10 +24,12 @@ router.post("/", async (req, res) => {
   user.password = hashed;
   user = await user.save();
 
-  res.status(200).send(_.pick(user, ["name", "email", "password"]));
+  const token = jwt.sign({ _id: user._id }, config.get("jwtPrivateKey"));
+  res
+    .header("x-auth-token", token)
+    .status(200)
+    .send(_.pick(user, ["name", "email", "password"]));
 });
-
-
 
 router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
