@@ -8,7 +8,6 @@ const movies = require("./routes/movies");
 const rentals = require("./routes/rentals");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
-const token = require('./middleware/auth');
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR : jwtPrivateKey not defined");
@@ -21,7 +20,6 @@ mongoose
 .catch(() => console.log("Couldn't connect to MonogoDB..."));
 
 app.use(express.json());
-app.use(token);
 app.use("/api/genres", genres);
 app.use("/api/customers", customers);
 app.use("/api/movies", movies);

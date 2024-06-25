@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 const { Genre, validate } = require("../models/genre");
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const genres = await Genre.find().sort("name");
   res.send(genres);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.message);
   let genre = new Genre({
@@ -32,7 +33,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const genreId = new mongoose.Types.ObjectId(req.params.id);
-  const genre = await Genre.findByIdAndDelete(genreId)
+  const genre = await Genre.findByIdAndDelete(genreId);
   if (!genre) res.status(400).send("ID Doesn't Exist !");
   res.status(200).send("Genre Deleted Succesfully");
 });
