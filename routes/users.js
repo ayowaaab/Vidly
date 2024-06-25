@@ -4,7 +4,7 @@ const { User, validate } = require("../models/user");
 const _ = require("lodash");
 const express = require("express");
 const router = express.Router();
-
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const users = await User.find().sort("email").select("-_id -__v");
@@ -49,4 +49,8 @@ router.delete("/:id", async (req, res) => {
   res.status(200).send("User Deleted Succesfully");
 });
 
+router.get("/me", auth, async (req, res) => {
+  const me = await User.findById(req.user._id).select("-password");
+  res.status(200).send(me);
+});
 module.exports = router;
