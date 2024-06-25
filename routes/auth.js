@@ -1,5 +1,6 @@
 const { User } = require("../models/user");
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const { verifyPassword } = require("../hash");
 const router = express.Router();
@@ -12,9 +13,10 @@ router.post("/", async (req, res) => {
   if (!user) return res.status(400).send("Email or password Doesn't Exist !");
 
   const verify = await verifyPassword(req.body.password, user.password);
-  if (verify) return res.status(200).send("Authenticated successfully");
+  if (!verify) return res.status(400).send("Invalid credentials !");
+  const token = jwt.sign({ _id:user._id},'jwtPrivateKey');
 
-  return res.status(400).send("Invalid credentials !");
+  return res.status(200).send(token);
 });
 
 async function validate(user) {
